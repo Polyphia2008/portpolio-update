@@ -16,10 +16,9 @@ function Toaster({ ...props }: ToasterProps) {
       mobileOffset={78}
       toastOptions={{
         duration: 3000,
-        dismissible: true,
         classNames: {
-          toast: "version-toast font-[family-name:var(--font-display)]",
-          closeButton: "td-toast-x"
+          toast: "td-sonner",
+          closeButton: "td-sonner-x"
         }
       }}
       {...props}
