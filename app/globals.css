@@ -478,6 +478,129 @@ img {
   font-size: 0.95rem;
 }
 
+#Toast {
+  font-size: 17px;
+  min-width: 225px;
+  max-width: min(86vw, 420px);
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  color: #0ff;
+  border-radius: 10px;
+  border: 1px solid #0ff;
+  padding: 16px 42px 16px 16px;
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  z-index: 2147483600;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  overflow: hidden;
+  cursor: inherit;
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.28);
+}
+
+#Toast.show {
+  animation: toastIn 1s both, toastGlow 2.6s ease-in-out 1s infinite;
+}
+
+#Toast.leave {
+  animation: toastOut 0.45s both;
+}
+
+.ws-toast-text {
+  flex: 1;
+  line-height: 1.4;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.45);
+}
+
+.ws-toast-x {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 1.4em;
+  height: 1.4em;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(0, 255, 255, 0.08);
+  color: #0ff;
+  font-family: var(--font-sans);
+  font-size: 0.6em;
+  line-height: 1;
+  cursor: inherit;
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.ws-toast-x:hover {
+  background: rgba(0, 255, 255, 0.26);
+  transform: scale(1.08);
+}
+
+.ws-toast-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #0ff, #4af2c8);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+#Toast.show .ws-toast-progress {
+  animation: toastProgress var(--ws-life, 5000ms) linear both;
+}
+
+#Toast.leave .ws-toast-progress {
+  opacity: 0;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(100%);
+  }
+}
+
+@keyframes toastGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 14px rgba(0, 255, 255, 0.22);
+    border-color: rgba(0, 255, 255, 0.75);
+  }
+  50% {
+    box-shadow: 0 0 26px rgba(0, 255, 255, 0.55);
+    border-color: #0ff;
+  }
+}
+
+@keyframes toastProgress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
 .td-sonner {
   min-width: 225px;
   max-width: 86vw;
