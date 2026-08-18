@@ -15,7 +15,8 @@ import { RunningCat } from "@/components/running-cat";
 import { ParticleField } from "@/components/particle-field";
 import { NowPlaying } from "@/components/now-playing";
 import { DestroyLayer } from "@/components/destroy-layer";
-import { Toaster } from "@/components/ui/sonner";
+import { AnimeMascot } from "@/components/anime-mascot";
+import { WsToast } from "@/components/ws-toast";
 
 export function AppShell() {
   const { loveMode } = useApp();
@@ -38,11 +39,12 @@ export function AppShell() {
       <div className="td-hide-mobile pointer-events-none fixed right-4 bottom-2 z-20 font-[family-name:var(--font-display)] text-[2rem] text-white">{clock}</div>
       <FpsMeter />
       <RunningCat />
+      <AnimeMascot />
       <NowPlaying />
       <SettingsSheet />
       <ShareDialog />
       <DestroyLayer />
-      <Toaster />
+      <WsToast />
     </>
   );
 }

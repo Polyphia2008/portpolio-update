@@ -1046,6 +1046,40 @@ img {
   animation: loadingAction 0.3s infinite alternate;
 }
 
+.thanhdieu-elements {
+  position: relative;
+  z-index: 4;
+}
+
+.anime-cb {
+  position: fixed;
+  right: 0;
+  bottom: -6px;
+  z-index: 4;
+  height: 240px;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.anime-cb.is-in {
+  opacity: 0.95;
+  transform: translateY(0);
+}
+
+.td-tick {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-left: 6px;
+  margin-top: -4px;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
 @media (max-width: 900px) {
   :root {
     --side-space: 5vw;
@@ -1064,5 +1098,10 @@ img {
 @media (max-width: 768px) {
   .td-hide-mobile {
     display: none !important;
+  }
+
+  .anime-cb {
+    height: 15vh;
+    bottom: 4px;
   }
 }

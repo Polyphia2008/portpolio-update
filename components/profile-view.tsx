@@ -34,6 +34,7 @@ export function ProfileView() {
       </div>
       <h2 className="td-name">
         <span>{text}</span>
+        <img src="/media/anime/tich-xanh.png" alt="" className="td-tick" />
         <span className="td-caret" />
       </h2>
       <div className="about-me-2">

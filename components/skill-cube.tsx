@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import { animate, useMotionValue } from "motion/react";
 import { skills, skillTitle } from "@/lib/config";
 
@@ -59,7 +59,7 @@ export function SkillCube() {
     };
   }, [rx, ry, startIdle, stopIdle]);
 
-  const onDown = (event: React.PointerEvent) => {
+  const onDown = (event: PointerEvent<HTMLDivElement>) => {
     stopIdle();
     setDragging(true);
     dragRef.current = { x: event.clientX, y: event.clientY, rx: rx.get(), ry: ry.get() };
@@ -75,7 +75,7 @@ export function SkillCube() {
     rx.set(Math.max(-78, Math.min(78, start.rx - (event.clientY - start.y) * 0.55)));
   };
 
-  const onUp = (event: React.PointerEvent) => {
+  const onUp = (event: PointerEvent<HTMLDivElement>) => {
     const start = dragRef.current;
     dragRef.current = null;
     setDragging(false);
