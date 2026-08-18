@@ -6,19 +6,20 @@ type ToastPayload = {
   id: number;
   text: string;
   life: number;
+  spin: boolean;
 };
 
 const listeners = new Set<(p: ToastPayload) => void>();
 let seq = 0;
 
-export function wsToast(text: string, life = 5000) {
+export function wsToast(text: string, life = 5000, spin = false) {
   seq += 1;
-  const payload: ToastPayload = { id: seq, text, life };
+  const payload: ToastPayload = { id: seq, text, life, spin };
   listeners.forEach((fn) => fn(payload));
 }
 
 export function wsToastClose() {
-  listeners.forEach((fn) => fn({ id: -1, text: "", life: 0 }));
+  listeners.forEach((fn) => fn({ id: -1, text: "", life: 0, spin: false }));
 }
 
 export function WsToast() {
@@ -49,8 +50,8 @@ export function WsToast() {
         dropRef.current = window.setTimeout(() => {
           setToast(null);
           setLeaving(false);
-        }, 500);
-      }, Math.max(1200, payload.life - 500));
+        }, 450);
+      }, Math.max(1200, payload.life - 450));
     };
     listeners.add(onToast);
     return () => {
@@ -73,7 +74,7 @@ export function WsToast() {
     dropRef.current = window.setTimeout(() => {
       setToast(null);
       setLeaving(false);
-    }, 420);
+    }, 450);
   };
 
   if (!toast) {
@@ -89,6 +90,7 @@ export function WsToast() {
       onClick={close}
       style={{ ["--ws-life" as string]: `${toast.life}ms` }}
     >
+      {toast.spin ? <i className="ws-toast-spin" /> : null}
       <span className="ws-toast-text">{toast.text}</span>
       <button
         type="button"
