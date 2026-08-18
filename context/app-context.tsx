@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
+import { wsToast } from "@/components/ws-toast";
 import { backgrounds, songs } from "@/lib/config";
 import { readStore, writeStore } from "@/lib/storage";
 import type { ThemeSkin } from "@/lib/types";
@@ -26,6 +26,8 @@ type AppContextValue = {
   playing: boolean;
   progress: number;
   duration: number;
+  playerOpen: boolean;
+  setPlayerOpen: (v: boolean) => void;
   playSong: (index: number) => void;
   togglePlay: () => void;
   nextSong: () => void;
@@ -45,6 +47,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [shareOpen, setShareOpen] = useState(false);
   const [destroy, setDestroy] = useState(false);
   const [songIndex, setSongIndex] = useState<number | null>(null);
+  const [playerOpen, setPlayerOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -96,7 +99,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setLoveMode((prev) => {
       const next = !prev;
       writeStore("love", next ? "1" : "0");
-      toast.info(next ? "Đã chuyển chế độ đếm ngày yêu" : "Đã chuyển về chế độ profile");
+      wsToast(next ? "Đã chuyển chế độ đếm ngày yêu" : "Đã chuyển về chế độ profile", 4000);
       return next;
     });
   }, []);
@@ -121,8 +124,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setSongIndex(index);
       indexRef.current = index;
       setPlaying(true);
+      setPlayerOpen(true);
       writeStore("song", String(index));
-      toast.success(`Đang phát: ${song.title}`);
+      wsToast(`Đang phát: ${song.title}`, 4000);
     },
     [ensureAudio]
   );
@@ -204,6 +208,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       playing,
       progress,
       duration,
+      playerOpen,
+      setPlayerOpen,
       playSong,
       togglePlay,
       nextSong,
@@ -218,6 +224,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       loveMode,
       nextSong,
       playSong,
+      playerOpen,
       playing,
       prevSong,
       progress,
