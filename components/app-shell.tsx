@@ -17,13 +17,14 @@ import { NowPlaying } from "@/components/now-playing";
 import { DestroyLayer } from "@/components/destroy-layer";
 import { AnimeMascot } from "@/components/anime-mascot";
 import { WsToast } from "@/components/ws-toast";
+import { AntiDdosGate } from "@/components/anti-ddos-gate";
 
 export function AppShell() {
   const { loveMode } = useApp();
   const clock = useNow(true);
 
   return (
-    <>
+    <AntiDdosGate>
       <Loader />
       <LockScreen />
       <ParticleField />
@@ -45,6 +46,6 @@ export function AppShell() {
       <ShareDialog />
       <DestroyLayer />
       <WsToast />
-    </>
+    </AntiDdosGate>
   );
 }
