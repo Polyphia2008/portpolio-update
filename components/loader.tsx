@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { site } from "@/lib/config";
+import { wsToast, wsToastClose } from "@/components/ws-toast";
 
 const hints = [
   { at: 0, text: "Đang tải tài nguyên..." },
@@ -10,34 +10,6 @@ const hints = [
   { at: 12000, text: "Chờ xíu sắp tải xong...." },
   { at: 20000, text: "Có thể mất nhiều thời gian" }
 ];
-
-const HINT_ID = "td-loader-hint";
-
-function pushToast(text: string, tone: "hint" | "done" | "version", life: number, id?: string) {
-  toast.custom(
-    (self) => (
-      <div
-        role="status"
-        onClick={() => toast.dismiss(self)}
-        className={tone === "version" ? "version-toast td-toast" : `td-toast td-toast-${tone}`}
-      >
-        <span className="td-toast-text">{text}</span>
-        <button
-          type="button"
-          aria-label="Đóng"
-          className="td-toast-close"
-          onClick={(event) => {
-            event.stopPropagation();
-            toast.dismiss(self);
-          }}
-        >
-          ✕
-        </button>
-      </div>
-    ),
-    { id, duration: life, dismissible: true }
-  );
-}
 
 export function Loader() {
   const [progress, setProgress] = useState(0);
@@ -55,7 +27,7 @@ export function Loader() {
           if (loadedRef.current) {
             return;
           }
-          pushToast(item.text, "hint", 3200, HINT_ID);
+          wsToast(item.text, 4000);
         }, item.at)
       );
     });
@@ -73,13 +45,12 @@ export function Loader() {
       hintTimers.length = 0;
       window.clearInterval(tick);
       setProgress(100);
-      toast.dismiss(HINT_ID);
+      wsToastClose();
       flowTimers.push(
         window.setTimeout(() => {
           setHiding(true);
-          pushToast("Tài nguyên đã tải xong :)", "done", 2600);
           flowTimers.push(window.setTimeout(() => setVisible(false), 450));
-          flowTimers.push(window.setTimeout(() => pushToast(site.version, "version", 5000), 1100));
+          flowTimers.push(window.setTimeout(() => wsToast(site.version, 5000), 620));
         }, 260)
       );
     };
@@ -96,7 +67,6 @@ export function Loader() {
       flowTimers.forEach((id) => window.clearTimeout(id));
       window.clearInterval(tick);
       window.removeEventListener("load", done);
-      toast.dismiss(HINT_ID);
     };
   }, []);
 
