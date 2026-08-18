@@ -4,6 +4,7 @@ import { useState } from "react";
 import { site, socials } from "@/lib/config";
 import { useTypedText } from "@/hooks/useTypedText";
 import { SkillCube } from "@/components/skill-cube";
+import { MagicText } from "@/components/magic-text";
 
 export function ProfileView() {
   const { text } = useTypedText(site.userName);
@@ -33,7 +34,7 @@ export function ProfileView() {
         </div>
       </div>
       <h2 className="td-name">
-        <span>{text}</span>
+        <MagicText>{text}</MagicText>
         <img src="/media/anime/tich-xanh.png" alt="" className="td-tick" />
         <span className="td-caret" />
       </h2>
