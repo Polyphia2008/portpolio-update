@@ -25,6 +25,23 @@ export const site = {
   messenger: "https://www.messenger.com/t/wusthanhdieu"
 };
 
+export const skillTitle = "- Skill Language -";
+
+export const skills = [
+  { name: "React", slug: "react", color: "#61DAFB" },
+  { name: "Next.js", slug: "nextdotjs", color: "#FFFFFF" },
+  { name: "TypeScript", slug: "typescript", color: "#3178C6" },
+  { name: "JavaScript", slug: "javascript", color: "#F7DF1E" },
+  { name: "HTML5", slug: "html5", color: "#E34F26" },
+  { name: "CSS3", slug: "css3", color: "#663399" },
+  { name: "Tailwind", slug: "tailwindcss", color: "#06B6D4" },
+  { name: "Node.js", slug: "nodedotjs", color: "#5FA04E" },
+  { name: "PHP", slug: "php", color: "#777BB4" },
+  { name: "Python", slug: "python", color: "#3776AB" },
+  { name: "Git", slug: "git", color: "#F05032" },
+  { name: "Vercel", slug: "vercel", color: "#FFFFFF" }
+];
+
 export const socials: SocialItem[] = [
   { id: "facebook", label: "Facebook", href: "https://facebook.com/wusthanhdieu", icon: "/media/social/facebook.webp" },
   { id: "instagram", label: "Instagram", href: "https://www.instagram.com/vuongsondieu2k2", icon: "/media/social/instagram.webp" },
