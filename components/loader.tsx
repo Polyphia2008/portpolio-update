@@ -27,7 +27,7 @@ export function Loader() {
           if (loadedRef.current) {
             return;
           }
-          wsToast(item.text, 4000);
+          wsToast(item.text, 4000, true);
         }, item.at)
       );
     });
