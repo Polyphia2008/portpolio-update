@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { lockQuotes, site } from "@/lib/config";
 import { useNow } from "@/hooks/useNow";
 import { useApp } from "@/context/app-context";
+import { MagicText } from "@/components/magic-text";
 
 export function LockScreen() {
   const { lockOpen, setLockOpen } = useApp();
@@ -46,8 +47,8 @@ export function LockScreen() {
       <video className="absolute inset-0 size-full object-cover brightness-[.8]" src={site.lockVideo} autoPlay loop muted playsInline />
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
         <img src={site.lockLogo} alt="" className="lock-logo size-32 rounded-full bg-[rgb(32_53_104_/_90%)] object-cover shadow-[0_0_15px_#d3d3d3ad]" />
-        <h1 className="mt-6 font-[family-name:var(--font-script)] text-[2rem] text-white [text-shadow:1px_1px_8px_rgb(32_53_104_/_90%)]">
-          𝑻𝒉𝒂𝒏𝒉𝑫𝒊𝒆𝒖
+        <h1 className="web-title mt-6 font-[family-name:var(--font-script)] text-[2rem] text-white">
+          <MagicText>𝑻𝒉𝒂𝒏𝒉𝑫𝒊𝒆𝒖</MagicText>
         </h1>
         <p className="max-w-[36rem] px-6 pt-4 text-base text-white [text-shadow:1px_1px_8px_rgb(32_53_104_/_90%)]">{quote}</p>
       </div>
