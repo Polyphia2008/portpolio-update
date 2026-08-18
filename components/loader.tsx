@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { site } from "@/lib/config";
 
@@ -11,43 +11,92 @@ const hints = [
   { at: 20000, text: "Có thể mất nhiều thời gian" }
 ];
 
+const HINT_ID = "td-loader-hint";
+
+function pushToast(text: string, tone: "hint" | "done" | "version", life: number, id?: string) {
+  toast.custom(
+    (self) => (
+      <div
+        role="status"
+        onClick={() => toast.dismiss(self)}
+        className={tone === "version" ? "version-toast td-toast" : `td-toast td-toast-${tone}`}
+      >
+        <span className="td-toast-text">{text}</span>
+        <button
+          type="button"
+          aria-label="Đóng"
+          className="td-toast-close"
+          onClick={(event) => {
+            event.stopPropagation();
+            toast.dismiss(self);
+          }}
+        >
+          ✕
+        </button>
+      </div>
+    ),
+    { id, duration: life, dismissible: true }
+  );
+}
+
 export function Loader() {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const [hiding, setHiding] = useState(false);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
-    const started = Date.now();
-    const timers = hints.map((item) =>
-      window.setTimeout(() => {
-        if (Date.now() - started < 1600) {
-          return;
-        }
-        toast.loading(item.text);
-      }, item.at)
-    );
+    const hintTimers: number[] = [];
+    const flowTimers: number[] = [];
+
+    hints.forEach((item) => {
+      hintTimers.push(
+        window.setTimeout(() => {
+          if (loadedRef.current) {
+            return;
+          }
+          pushToast(item.text, "hint", 3200, HINT_ID);
+        }, item.at)
+      );
+    });
+
     const tick = window.setInterval(() => {
       setProgress((prev) => Math.min(100, prev + Math.random() * 11 + 4));
     }, 120);
+
     const done = () => {
+      if (loadedRef.current) {
+        return;
+      }
+      loadedRef.current = true;
+      hintTimers.forEach((id) => window.clearTimeout(id));
+      hintTimers.length = 0;
+      window.clearInterval(tick);
       setProgress(100);
-      window.setTimeout(() => {
-        setHiding(true);
-        toast.dismiss();
-        toast.info("Tài nguyên đã tải xong :)");
-        window.setTimeout(() => toast(site.version), 700);
-        window.setTimeout(() => setVisible(false), 450);
-      }, 280);
+      toast.dismiss(HINT_ID);
+      flowTimers.push(
+        window.setTimeout(() => {
+          setHiding(true);
+          pushToast("Tài nguyên đã tải xong :)", "done", 2600);
+          flowTimers.push(window.setTimeout(() => setVisible(false), 450));
+          flowTimers.push(window.setTimeout(() => pushToast(site.version, "version", 5000), 1100));
+        }, 260)
+      );
     };
+
     if (document.readyState === "complete") {
-      window.setTimeout(done, 900);
+      flowTimers.push(window.setTimeout(done, 900));
     } else {
       window.addEventListener("load", done, { once: true });
-      window.setTimeout(done, 2200);
+      flowTimers.push(window.setTimeout(done, 2200));
     }
+
     return () => {
-      timers.forEach((id) => window.clearTimeout(id));
+      hintTimers.forEach((id) => window.clearTimeout(id));
+      flowTimers.forEach((id) => window.clearTimeout(id));
       window.clearInterval(tick);
+      window.removeEventListener("load", done);
+      toast.dismiss(HINT_ID);
     };
   }, []);
 
