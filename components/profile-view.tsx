@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { site, socials } from "@/lib/config";
 import { useTypedText } from "@/hooks/useTypedText";
+import { SkillCube } from "@/components/skill-cube";
 
 export function ProfileView() {
   const { text } = useTypedText(site.userName);
@@ -57,6 +58,8 @@ export function ProfileView() {
           </a>
         ))}
       </div>
+      <SkillCube />
+      <div className="h-24" />
     </section>
   );
 }
